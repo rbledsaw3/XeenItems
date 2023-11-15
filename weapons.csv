@@ -1,0 +1,34 @@
+Weapon,minDamage,maxDamage,Base_Cost,Restriction
+Long Sword,3,9,50,No Cleric Druid Ninja Sorcerer
+Short Sword,2,6,15,No Cleric Druid Ninja Sorcerer
+Broad Sword,3,12,100,No Cleric Druid Ninja Sorcerer
+Scimitar,2,10,80,No Cleric Druid Ninja Sorcerer
+Cutlass,2,8,40,No Cleric Druid Ninja Sorcerer
+Sabre,4,8,60,No Cleric Druid Ninja Sorcerer
+Club,1,3,1,None
+Hand Axe,2,6,10,No Cleric Sorcerer
+Katana,4,12,150,Only Knight Ninja
+Nunchakas,2,6,30,Only Knight Ninja
+Wakazashi,3,9,60,Only Knight Ninja
+Dagger,2,4,8,No Cleric
+Mace,2,8,50,No Sorcerer
+Flail,1,10,100,No Sorcerer
+Cudgel,1,6,15,No Sorcerer
+Maul,1,8,30,No Sorcerer
+Spear,1,9,15,No Cleric Sorcerer
+Bardiche,4,16,200,No Cleric Sorcerer Druid
+Glaive,4,12,80,No Cleric Sorcerer Druid
+Halberd,3,18,250,No Cleric Sorcerer Druid
+Pike,2,16,150,No Cleric Sorcerer Druid
+Flamberge,4,20,400,Only Archer Knight Paladin Ranger
+Trident,2,12,100,No Cleric Sorcerer Druid
+Staff,2,8,40,None
+Hammer,2,10,120,No Sorcerer
+Naginata,5,15,300,Only Knight Ninja
+Battle Axe,3,15,100,No Cleric Sorcerer Druid Ninja
+Grand Axe,3,18,200,No Cleric Sorcerer Druid Ninja
+Great Axe,3,21,300,No Cleric Sorcerer Druid Ninja
+Short Bow,3,6,25,No Cleric Sorcerer Druid
+Long Bow,5,10,100,No Cleric Sorcerer Druid
+Crossbow,4,8,50,No Cleric Sorcerer Druid
+Sling,2,4,15,No Cleric Sorcerer Druid
