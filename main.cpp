@@ -6,13 +6,13 @@
 #include <unordered_map>
 #include <algorithm>
 
-const std::string RED = "\033[31m";      // Red
-const std::string GREEN = "\033[32m";    // Green
-const std::string YELLOW = "\033[33m";   // Yellow
-const std::string BLUE = "\033[34m";     // Blue
-const std::string MAGENTA = "\033[35m";  // Magenta
-const std::string CYAN = "\033[36m";     // Cyan
-const std::string RESET = "\033[0m";     // Reset to default color
+const char* RED = "\033[31m";      // Red
+const char* GREEN = "\033[32m";    // Green
+const char* YELLOW = "\033[33m";   // Yellow
+const char* BLUE = "\033[34m";     // Blue
+const char* MAGENTA = "\033[35m";  // Magenta
+const char* CYAN = "\033[36m";     // Cyan
+const char* RESET = "\033[0m";     // Reset to default color
 
 struct Weapon {
     std::string name;
