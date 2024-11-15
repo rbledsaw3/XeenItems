@@ -59,7 +59,7 @@ struct MaterialModifier {
 };
 
 std::unordered_map<std::string, Weapon> loadWeapons() {
-  std::ifstream file("weapons.csv");
+  std::ifstream file("../data/weapons.csv");
   std::string line;
   std::unordered_map<std::string, Weapon> weapons;
   std::getline(file, line);  // skip header line
@@ -90,7 +90,7 @@ std::unordered_map<std::string, Weapon> loadWeapons() {
 }
 
 std::unordered_map<std::string, Armor> loadArmors() {
-  std::ifstream file("armor.csv");
+  std::ifstream file("../data/armor.csv");
   std::unordered_map<std::string, Armor> armors;
   std::string line;
   std::getline(file, line);  // skip header line
@@ -120,7 +120,7 @@ std::unordered_map<std::string, Armor> loadArmors() {
 }
 
 std::unordered_map<std::string, Accessories> loadAccessories() {
-  std::ifstream file("accessories.csv");
+  std::ifstream file("../data/accessories.csv");
   std::unordered_map<std::string, Accessories> accessories;
   std::string line;
   std::getline(file, line);  // skip header line
@@ -145,7 +145,7 @@ std::unordered_map<std::string, Accessories> loadAccessories() {
 }
 
 std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers() {
-  std::ifstream file("attributes.csv");
+  std::ifstream file("../data/attributes.csv");
   std::unordered_map<std::string, AttributeModifier> attributeModifiers;
   std::string line;
   std::getline(file, line);  // skip header line
@@ -170,7 +170,7 @@ std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers() {
 }
 
 std::unordered_map<std::string, ElementalModifier> loadElementalModifiers() {
-  std::ifstream file("elements.csv");
+  std::ifstream file("../data/elements.csv");
   std::string line;
   std::unordered_map<std::string, ElementalModifier> elementalModifiers;
   std::getline(file, line);  // skip header line
@@ -198,7 +198,7 @@ std::unordered_map<std::string, ElementalModifier> loadElementalModifiers() {
 }
 
 std::unordered_map<std::string, MaterialModifier> loadMaterialModifiers() {
-  std::ifstream file("materials.csv");
+  std::ifstream file("../data/materials.csv");
   std::unordered_map<std::string, MaterialModifier> materialModifiers;
   std::string line;
   std::getline(file, line);  // skip header line
