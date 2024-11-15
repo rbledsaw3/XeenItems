@@ -5,7 +5,6 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
-#include <vector>
 
 const char* const RED = "\033[31m";      // Red
 const char* const GREEN = "\033[32m";    // Green
@@ -81,7 +80,7 @@ std::unordered_map<std::string, Weapon> loadWeapons() {
       std::stoi(maxDamage);
       std::stoi(baseCost);
     } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in weapons.csv" << e.what() << RESET << std::endl;
+      std::cout << RED << "Error: invalid argument in weapons.csv" << e.what() << RESET << "\n";
       exit(1);
     }
     Weapon weapon = { name, std::stoi(minDamage), std::stoi(maxDamage), std::stoi(baseCost), restrictions };
@@ -111,7 +110,7 @@ std::unordered_map<std::string, Armor> loadArmors() {
       std::stoi(baseCost);
       std::stoi(armorClass);
     } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in armor.csv" << e.what() << RESET << std::endl;
+      std::cout << RED << "Error: invalid argument in armor.csv" << e.what() << RESET << "\n";
       exit(1);
     }
     Armor armor = { name, std::stoi(baseCost), std::stoi(armorClass), equipable, restrictions };
@@ -136,7 +135,7 @@ std::unordered_map<std::string, Accessories> loadAccessories() {
     try {
       std::stoi(baseCost);
     } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in accessories.csv" << e.what() << RESET << std::endl;
+      std::cout << RED << "Error: invalid argument in accessories.csv" << e.what() << RESET << "\n";
       exit(1);
     }
     Accessories accessory = { name, std::stoi(baseCost), qtyEquipable };
@@ -161,7 +160,7 @@ std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers() {
     try {
       std::stoi(bonus);
     } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in attributes.csv" << e.what() << RESET << std::endl;
+      std::cout << RED << "Error: invalid argument in attributes.csv" << e.what() << RESET << "\n";
       exit(1);
     }
     AttributeModifier attributeModifier = { name, type, std::stoi(bonus) };
@@ -189,7 +188,7 @@ std::unordered_map<std::string, ElementalModifier> loadElementalModifiers() {
       std::stoi(resistance);
       std::stoi(damage);
     } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in elements.csv" << e.what() << RESET << std::endl;
+      std::cout << RED << "Error: invalid argument in elements.csv" << e.what() << RESET << "\n";
       exit(1);
     }
     ElementalModifier elementalModifier = { type, name, std::stoi(resistance), std::stoi(damage) };
@@ -223,7 +222,7 @@ std::unordered_map<std::string, MaterialModifier> loadMaterialModifiers() {
       std::stoi(armorClassBonus);
       std::stof(costMultiplier);
     } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in materials.csv" << e.what() << RESET << std::endl;
+      std::cout << RED << "Error: invalid argument in materials.csv" << e.what() << RESET << "\n";
       exit(1);
     }
     MaterialModifier materialModifier = { quality,
@@ -243,26 +242,26 @@ void printMaterialWeapon(const std::unordered_map<std::string, MaterialModifier>
                          const std::string& weaponName) {
   auto weaponIt = weapons.find(weaponName);
   if (weaponIt == weapons.end()) {
-    std::cout << RED << "Error: weapon " << weaponName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: weapon " << weaponName << " not found" << RESET << "\n";
     return;
   }
   const Weapon& weapon = weaponIt->second;
 
   auto materialIt = materialModifiers.find(material);
   if (materialIt == materialModifiers.end()) {
-    std::cout << RED << "Error: material " << material << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: material " << material << " not found" << RESET << "\n";
     return;
   }
   const MaterialModifier& materialModifier = materialIt->second;
 
-  std::cout << GREEN << "Name: " << materialModifier.material << " " << weapon.name << RESET << std::endl;
+  std::cout << GREEN << "Name: " << materialModifier.material << " " << weapon.name << RESET << "\n";
   std::cout << "Damage: " << weapon.minDamage + materialModifier.damageBonus << "-"
-            << weapon.maxDamage + materialModifier.damageBonus << std::endl;
+            << weapon.maxDamage + materialModifier.damageBonus << "\n";
   std::cout << "Cost: "
             << static_cast<int>(std::round(static_cast<float>(weapon.baseCost) * materialModifier.costMultiplier))
-            << std::endl;
-  std::cout << "To Hit Bonus: +" << materialModifier.toHitBonus << std::endl;
-  std::cout << "Restrictions: " << weapon.restrictions << std::endl;
+            << "\n";
+  std::cout << "To Hit Bonus: +" << materialModifier.toHitBonus << "\n";
+  std::cout << "Restrictions: " << weapon.restrictions << "\n";
 }
 
 void printElementalWeapon(const std::unordered_map<std::string, ElementalModifier>& elementalModifiers,
@@ -271,25 +270,25 @@ void printElementalWeapon(const std::unordered_map<std::string, ElementalModifie
                           const std::string& weaponName) {
   auto weaponIt = weapons.find(weaponName);
   if (weaponIt == weapons.end()) {
-    std::cout << RED << "Error: weapon " << weaponName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: weapon " << weaponName << " not found" << RESET << "\n";
     return;
   }
   const Weapon& weapon = weaponIt->second;
 
   auto elementalIt = elementalModifiers.find(elemental);
   if (elementalIt == elementalModifiers.end()) {
-    std::cout << RED << "Error: elemental " << elemental << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: elemental " << elemental << " not found" << RESET << "\n";
     return;
   }
   const ElementalModifier& elementalModifier = elementalIt->second;
-  std::cout << GREEN << "Name: " << elementalModifier.name << " " << weapon.name << RESET << std::endl;
-  std::cout << "Damage: " << weapon.minDamage << "-" << weapon.maxDamage << std::endl;
-  std::cout << "Cost: " << weapon.baseCost << std::endl;
+  std::cout << GREEN << "Name: " << elementalModifier.name << " " << weapon.name << RESET << "\n";
+  std::cout << "Damage: " << weapon.minDamage << "-" << weapon.maxDamage << "\n";
+  std::cout << "Cost: " << weapon.baseCost << "\n";
   std::cout << "Elemental Damage: " << elementalModifier.damage << " " << elementalModifier.type << " Damage"
-            << std::endl;
+            << "\n";
   std::cout << "Total Damage: " << weapon.minDamage + elementalModifier.damage << "-"
-            << weapon.maxDamage + elementalModifier.damage << std::endl;
-  std::cout << "Restrictions: " << weapon.restrictions << std::endl;
+            << weapon.maxDamage + elementalModifier.damage << "\n";
+  std::cout << "Restrictions: " << weapon.restrictions << "\n";
 }
 
 void printAttributeWeapon(const std::unordered_map<std::string, AttributeModifier>& attributeModifiers,
@@ -298,22 +297,22 @@ void printAttributeWeapon(const std::unordered_map<std::string, AttributeModifie
                           const std::string& weaponName) {
   auto weaponIt = weapons.find(weaponName);
   if (weaponIt == weapons.end()) {
-    std::cout << RED << "Error: weapon " << weaponName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: weapon " << weaponName << " not found" << RESET << "\n";
     return;
   }
   const Weapon& weapon = weaponIt->second;
 
   auto attributeIt = attributeModifiers.find(attribute);
   if (attributeIt == attributeModifiers.end()) {
-    std::cout << RED << "Error: attribute " << attribute << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: attribute " << attribute << " not found" << RESET << "\n";
     return;
   }
   const AttributeModifier& attributeModifier = attributeIt->second;
-  std::cout << GREEN << "Name: " << attributeModifier.name << " " << weapon.name << RESET << std::endl;
-  std::cout << "Damage: " << weapon.minDamage << "-" << weapon.maxDamage << std::endl;
-  std::cout << "Cost: " << weapon.baseCost << std::endl;
-  std::cout << "Attribute Bonus: +" << attributeModifier.bonus << " " << attributeModifier.type << std::endl;
-  std::cout << "Restrictions: " << weapon.restrictions << std::endl;
+  std::cout << GREEN << "Name: " << attributeModifier.name << " " << weapon.name << RESET << "\n";
+  std::cout << "Damage: " << weapon.minDamage << "-" << weapon.maxDamage << "\n";
+  std::cout << "Cost: " << weapon.baseCost << "\n";
+  std::cout << "Attribute Bonus: +" << attributeModifier.bonus << " " << attributeModifier.type << "\n";
+  std::cout << "Restrictions: " << weapon.restrictions << "\n";
 }
 
 void printMaterialArmor(const std::unordered_map<std::string, MaterialModifier>& materialModifiers,
@@ -322,23 +321,23 @@ void printMaterialArmor(const std::unordered_map<std::string, MaterialModifier>&
                         const std::string& armorName) {
   auto armorIt = armors.find(armorName);
   if (armorIt == armors.end()) {
-    std::cout << RED << "Error: armor " << armorName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: armor " << armorName << " not found" << RESET << "\n";
     return;
   }
   const Armor& armor = armorIt->second;
 
   auto materialIt = materialModifiers.find(material);
   if (materialIt == materialModifiers.end()) {
-    std::cout << RED << "Error: material " << material << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: material " << material << " not found" << RESET << "\n";
     return;
   }
   const MaterialModifier& materialModifier = materialIt->second;
-  std::cout << GREEN << "Name: " << materialModifier.material << " " << armor.name << RESET << std::endl;
-  std::cout << "Armor Class: " << armor.armorClass + materialModifier.armorClassBonus << std::endl;
+  std::cout << GREEN << "Name: " << materialModifier.material << " " << armor.name << RESET << "\n";
+  std::cout << "Armor Class: " << armor.armorClass + materialModifier.armorClassBonus << "\n";
   std::cout << "Cost: "
             << static_cast<int>(std::round(static_cast<float>(armor.baseCost) * materialModifier.costMultiplier))
-            << std::endl;
-  std::cout << "Restrictions: " << armor.restrictions << std::endl;
+            << "\n";
+  std::cout << "Restrictions: " << armor.restrictions << "\n";
 }
 
 void printElementalArmor(const std::unordered_map<std::string, ElementalModifier>& elementalModifiers,
@@ -347,22 +346,22 @@ void printElementalArmor(const std::unordered_map<std::string, ElementalModifier
                          const std::string& armorName) {
   auto armorIt = armors.find(armorName);
   if (armorIt == armors.end()) {
-    std::cout << RED << "Error: armor " << armorName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: armor " << armorName << " not found" << RESET << "\n";
     return;
   }
   const Armor& armor = armorIt->second;
 
   auto elementalIt = elementalModifiers.find(elemental);
   if (elementalIt == elementalModifiers.end()) {
-    std::cout << RED << "Error: elemental " << elemental << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: elemental " << elemental << " not found" << RESET << "\n";
     return;
   }
   const ElementalModifier& elementalModifier = elementalIt->second;
-  std::cout << GREEN << "Name: " << elementalModifier.name << " " << armor.name << RESET << std::endl;
-  std::cout << "Resistance: " << elementalModifier.resistance << "% " << elementalModifier.type << std::endl;
-  std::cout << "Armor Class: " << armor.armorClass << std::endl;
-  std::cout << "Cost: " << armor.baseCost << std::endl;
-  std::cout << "Restrictions: " << armor.restrictions << std::endl;
+  std::cout << GREEN << "Name: " << elementalModifier.name << " " << armor.name << RESET << "\n";
+  std::cout << "Resistance: " << elementalModifier.resistance << "% " << elementalModifier.type << "\n";
+  std::cout << "Armor Class: " << armor.armorClass << "\n";
+  std::cout << "Cost: " << armor.baseCost << "\n";
+  std::cout << "Restrictions: " << armor.restrictions << "\n";
 }
 
 void printAttributeArmor(const std::unordered_map<std::string, AttributeModifier>& attributeModifiers,
@@ -371,24 +370,24 @@ void printAttributeArmor(const std::unordered_map<std::string, AttributeModifier
                          const std::string& armorName) {
   auto armorIt = armors.find(armorName);
   if (armorIt == armors.end()) {
-    std::cout << RED << "Error: armor " << armorName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: armor " << armorName << " not found" << RESET << "\n";
     return;
   }
   const Armor& armor = armorIt->second;
 
   auto attributeIt = attributeModifiers.find(attribute);
   if (attributeIt == attributeModifiers.end()) {
-    std::cout << RED << "Error: attribute " << attribute << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: attribute " << attribute << " not found" << RESET << "\n";
     return;
   }
   const AttributeModifier& attributeModifier = attributeIt->second;
-  std::cout << GREEN << "Name: " << attributeModifier.name << " " << armor.name << RESET << std::endl;
-  std::cout << "Bonus: +" << attributeModifier.bonus << " " << attributeModifier.type << std::endl;
+  std::cout << GREEN << "Name: " << attributeModifier.name << " " << armor.name << RESET << "\n";
+  std::cout << "Bonus: +" << attributeModifier.bonus << " " << attributeModifier.type << "\n";
   attributeModifier.type == "AC"
-    ? std::cout << "Armor Class: " << armor.armorClass + attributeModifier.bonus << std::endl
-    : std::cout << "Armor Class: " << armor.armorClass << std::endl;
-  std::cout << "Cost: " << armor.baseCost << std::endl;
-  std::cout << "Restrictions: " << armor.restrictions << std::endl;
+    ? std::cout << "Armor Class: " << armor.armorClass + attributeModifier.bonus << "\n"
+    : std::cout << "Armor Class: " << armor.armorClass << "\n";
+  std::cout << "Cost: " << armor.baseCost << "\n";
+  std::cout << "Restrictions: " << armor.restrictions << "\n";
 }
 
 void printMaterialAccessory(const std::unordered_map<std::string, MaterialModifier>& materialModifiers,
@@ -397,24 +396,24 @@ void printMaterialAccessory(const std::unordered_map<std::string, MaterialModifi
                             const std::string& accessoryName) {
   auto accessoryIt = accessories.find(accessoryName);
   if (accessoryIt == accessories.end()) {
-    std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << "\n";
     return;
   }
   const Accessories& accessory = accessoryIt->second;
 
   auto materialIt = materialModifiers.find(material);
   if (materialIt == materialModifiers.end()) {
-    std::cout << RED << "Error: material " << material << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: material " << material << " not found" << RESET << "\n";
     return;
   }
   const MaterialModifier& materialModifier = materialIt->second;
   std::cout << GREEN << "Name: " << materialModifier.quality << " " << materialModifier.material << " "
-            << accessory.name << RESET << std::endl;
-  std::cout << "Cost: " << (float) accessory.baseCost * materialModifier.costMultiplier << std::endl;
+            << accessory.name << RESET << "\n";
+  std::cout << "Cost: " << (float) accessory.baseCost * materialModifier.costMultiplier << "\n";
   std::cout << "Cost: "
             << static_cast<int>(std::round(static_cast<float>(accessory.baseCost) * materialModifier.costMultiplier))
-            << std::endl;
-  std::cout << "Qty Equipable: " << accessory.qtyEquipable << std::endl;
+            << "\n";
+  std::cout << "Qty Equipable: " << accessory.qtyEquipable << "\n";
 }
 
 void printElementalAccessory(const std::unordered_map<std::string, ElementalModifier>& elementalModifiers,
@@ -423,21 +422,21 @@ void printElementalAccessory(const std::unordered_map<std::string, ElementalModi
                              const std::string& accessoryName) {
   auto accessoryIt = accessories.find(accessoryName);
   if (accessoryIt == accessories.end()) {
-    std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << "\n";
     return;
   }
   const Accessories& accessory = accessoryIt->second;
 
   auto elementalIt = elementalModifiers.find(elemental);
   if (elementalIt == elementalModifiers.end()) {
-    std::cout << RED << "Error: elemental " << elemental << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: elemental " << elemental << " not found" << RESET << "\n";
     return;
   }
   const ElementalModifier& elementalModifier = elementalIt->second;
-  std::cout << GREEN << "Name: " << elementalModifier.name << " " << accessory.name << RESET << std::endl;
-  std::cout << "Bonus: +" << elementalModifier.resistance << " " << elementalModifier.type << std::endl;
-  std::cout << "Cost: " << accessory.baseCost << std::endl;
-  std::cout << "Qty Equipable: " << accessory.qtyEquipable << std::endl;
+  std::cout << GREEN << "Name: " << elementalModifier.name << " " << accessory.name << RESET << "\n";
+  std::cout << "Bonus: +" << elementalModifier.resistance << " " << elementalModifier.type << "\n";
+  std::cout << "Cost: " << accessory.baseCost << "\n";
+  std::cout << "Qty Equipable: " << accessory.qtyEquipable << "\n";
 }
 
 void printAttributeAccessory(const std::unordered_map<std::string, AttributeModifier>& attributeModifiers,
@@ -446,21 +445,21 @@ void printAttributeAccessory(const std::unordered_map<std::string, AttributeModi
                              const std::string& accessoryName) {
   auto accessoryIt = accessories.find(accessoryName);
   if (accessoryIt == accessories.end()) {
-    std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << "\n";
     return;
   }
   const Accessories& accessory = accessoryIt->second;
 
   auto attributeIt = attributeModifiers.find(attribute);
   if (attributeIt == attributeModifiers.end()) {
-    std::cout << RED << "Error: attribute " << attribute << " not found" << RESET << std::endl;
+    std::cout << RED << "Error: attribute " << attribute << " not found" << RESET << "\n";
     return;
   }
   const AttributeModifier& attributeModifier = attributeIt->second;
-  std::cout << GREEN << "Name: " << attributeModifier.name << " " << accessory.name << RESET << std::endl;
-  std::cout << "Bonus: +" << attributeModifier.bonus << " " << attributeModifier.type << std::endl;
-  std::cout << "Cost: " << accessory.baseCost << std::endl;
-  std::cout << "Qty Equipable: " << accessory.qtyEquipable << std::endl;
+  std::cout << GREEN << "Name: " << attributeModifier.name << " " << accessory.name << RESET << "\n";
+  std::cout << "Bonus: +" << attributeModifier.bonus << " " << attributeModifier.type << "\n";
+  std::cout << "Cost: " << accessory.baseCost << "\n";
+  std::cout << "Qty Equipable: " << accessory.qtyEquipable << "\n";
 }
 
 void trim(std::string& str) {
@@ -489,7 +488,7 @@ void printWeapon(const std::unordered_map<std::string, MaterialModifier>& materi
   } else if (attributeModifiers.find(modifier) != attributeModifiers.end()) {
     printAttributeWeapon(attributeModifiers, modifier, weapons, itemName);
   } else {
-    std::cout << "Modifier not found." << std::endl;
+    std::cout << "Modifier not found." << "\n";
   }
 }
 
@@ -506,7 +505,7 @@ void printArmor(const std::unordered_map<std::string, MaterialModifier>& materia
   } else if (attributeModifiers.find(modifier) != attributeModifiers.end()) {
     printAttributeArmor(attributeModifiers, modifier, armors, itemName);
   } else {
-    std::cout << "Modifier not found." << std::endl;
+    std::cout << "Modifier not found." << "\n";
   }
 }
 
@@ -523,7 +522,7 @@ void printAccessory(const std::unordered_map<std::string, MaterialModifier>& mat
   } else if (attributeModifiers.find(modifier) != attributeModifiers.end()) {
     printAttributeAccessory(attributeModifiers, modifier, accessories, itemName);
   } else {
-    std::cout << "Modifier not found." << std::endl;
+    std::cout << "Modifier not found." << "\n";
   }
 }
 
@@ -542,7 +541,7 @@ void processItem(const std::unordered_map<std::string, MaterialModifier>& materi
   } else if (accessories.find(itemName) != accessories.end()) {
     printAccessory(materialModifiers, elementalModifiers, attributeModifiers, modifier, accessories, itemName);
   } else {
-    std::cout << "Item not found." << std::endl;
+    std::cout << "Item not found." << "\n";
   }
 }
 
@@ -584,6 +583,6 @@ int main() {
   const std::unordered_map<std::string, ElementalModifier> elementalModifiers = loadElementalModifiers();
   const std::unordered_map<std::string, AttributeModifier> attributeModifiers = loadAttributeModifiers();
   while (getInput(materialModifiers, elementalModifiers, attributeModifiers, weapons, armors, accessories)) {}
-  std::cout << "Exiting..." << std::endl;
+  std::cout << "Exiting..." << "\n";
   return 0;
 }
