@@ -76,3 +76,8 @@ Exiting...
 
 Add functionality to input current party's makeup and inventory loadout. Then when querying an item, the potential change in each character's stats are shown (if they are able to use that item).
 
+## Contributing
+
+### Submit a pull request
+
+If you'd like to contribute, please fork the repository and open a pull request to the `master` branch.
