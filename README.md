@@ -1,7 +1,8 @@
 # XeenItems
 
 ## Overview
-XeenItems is a comprehensive C++ project that handles various item-related functionalities for RPG gaming. It includes features like reading CSV files for items, armors, weapons, and more, and demonstrating their usage in a simulated environment.
+
+Ever play Might & Magic's Clouds/Darkside/World/Swords of Xeen? Isn't it a pain to have to lookup whether the item you have is better than the item you just found on the lich you just killed? This is a program I wrote to help with that. Just type the name of the item in and it'll assembly, based on the nomenclature, what boosts and effects are found on that item.
 
 ## Getting Started
 
@@ -70,3 +71,8 @@ Restrictions: No Cleric Druid Ninja Sorcerer
 Enter an item with a modifier, or q/Q/exit/quit to quit: q
 Exiting...
 ```
+
+## Todo:
+
+Add functionality to input current party's makeup and inventory loadout. Then when querying an item, the potential change in each character's stats are shown (if they are able to use that item).
+
