@@ -30,7 +30,7 @@ struct Armor {
     std::string restrictions;
 };
 
-struct Accessories {
+struct Accessory {
     std::string name;
     int baseCost;
     std::string qtyEquipable;
@@ -58,11 +58,30 @@ struct MaterialModifier {
     float costMultiplier;
 };
 
-std::unordered_map<std::string, Weapon> loadWeapons() {
-  std::ifstream file("weapons.csv");
+int parseInt(const std::string& str, const char* fileName) {
+    try {
+        return std::stoi(str);
+    } catch (const std::invalid_argument& e) {
+      std::cout << RED << "Error: invalid argument in " << fileName << ": " << e.what() << RESET << "\n";
+      exit(1);
+    }
+}
+
+
+float parseFloat(const std::string& str, const char* fileName) {
+    try {
+        return std::stof(str);
+    } catch (const std::invalid_argument& e) {
+      std::cout << RED << "Error: invalid argument in " << fileName << ": " << e.what() << RESET << "\n";
+      exit(1);
+    }
+}
+
+std::unordered_map<std::string, Weapon> loadWeapons(const char* fileName = "weapons.csv") {
+  std::ifstream file(fileName);
   std::string line;
   std::unordered_map<std::string, Weapon> weapons;
-  std::getline(file, line);  // skip header line
+  std::getline(file, line);
   while (std::getline(file, line)) {
     std::stringstream strStream(line);
     std::string name;
@@ -75,25 +94,23 @@ std::unordered_map<std::string, Weapon> loadWeapons() {
     std::getline(strStream, maxDamage, ',');
     std::getline(strStream, baseCost, ',');
     std::getline(strStream, restrictions);
-    try {
-      std::stoi(minDamage);
-      std::stoi(maxDamage);
-      std::stoi(baseCost);
-    } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in weapons.csv" << e.what() << RESET << "\n";
-      exit(1);
-    }
-    Weapon weapon = { name, std::stoi(minDamage), std::stoi(maxDamage), std::stoi(baseCost), restrictions };
+    Weapon weapon = {
+            name,
+            parseInt(minDamage, fileName),
+            parseInt(maxDamage, fileName),
+            parseInt(baseCost, fileName),
+            restrictions
+        };
     weapons[name] = weapon;
   }
   return weapons;
 }
 
-std::unordered_map<std::string, Armor> loadArmors() {
-  std::ifstream file("armor.csv");
+std::unordered_map<std::string, Armor> loadArmors(const char* fileName = "armor.csv") {
+  std::ifstream file(fileName);
   std::unordered_map<std::string, Armor> armors;
   std::string line;
-  std::getline(file, line);  // skip header line
+  std::getline(file, line);
   while (std::getline(file, line)) {
     std::stringstream strStream(line);
     std::string name;
@@ -106,24 +123,23 @@ std::unordered_map<std::string, Armor> loadArmors() {
     std::getline(strStream, armorClass, ',');
     std::getline(strStream, equipable, ',');
     std::getline(strStream, restrictions);
-    try {
-      std::stoi(baseCost);
-      std::stoi(armorClass);
-    } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in armor.csv" << e.what() << RESET << "\n";
-      exit(1);
-    }
-    Armor armor = { name, std::stoi(baseCost), std::stoi(armorClass), equipable, restrictions };
+    Armor armor = {
+            name,
+            parseInt(baseCost, fileName),
+            parseInt(armorClass, fileName),
+            equipable,
+            restrictions
+        };
     armors[name] = armor;
   }
   return armors;
 }
 
-std::unordered_map<std::string, Accessories> loadAccessories() {
-  std::ifstream file("accessories.csv");
-  std::unordered_map<std::string, Accessories> accessories;
+std::unordered_map<std::string, Accessory> loadAccessories(const char* fileName = "accessories.csv") {
+  std::ifstream file(fileName);
+  std::unordered_map<std::string, Accessory> accessories;
   std::string line;
-  std::getline(file, line);  // skip header line
+  std::getline(file, line);
   while (std::getline(file, line)) {
     std::stringstream strStream(line);
     std::string name;
@@ -132,23 +148,21 @@ std::unordered_map<std::string, Accessories> loadAccessories() {
     std::getline(strStream, name, ',');
     std::getline(strStream, baseCost, ',');
     std::getline(strStream, qtyEquipable);
-    try {
-      std::stoi(baseCost);
-    } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in accessories.csv" << e.what() << RESET << "\n";
-      exit(1);
-    }
-    Accessories accessory = { name, std::stoi(baseCost), qtyEquipable };
+    Accessory accessory = {
+            name,
+            parseInt(baseCost, fileName),
+            qtyEquipable
+        };
     accessories[name] = accessory;
   }
   return accessories;
 }
 
-std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers() {
-  std::ifstream file("attributes.csv");
+std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers(const char* fileName = "attributes.csv") {
+  std::ifstream file(fileName);
   std::unordered_map<std::string, AttributeModifier> attributeModifiers;
   std::string line;
-  std::getline(file, line);  // skip header line
+  std::getline(file, line);
   while (std::getline(file, line)) {
     std::stringstream strStream(line);
     std::string name;
@@ -157,23 +171,21 @@ std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers() {
     std::getline(strStream, name, ',');
     std::getline(strStream, type, ',');
     std::getline(strStream, bonus);
-    try {
-      std::stoi(bonus);
-    } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in attributes.csv" << e.what() << RESET << "\n";
-      exit(1);
-    }
-    AttributeModifier attributeModifier = { name, type, std::stoi(bonus) };
+    AttributeModifier attributeModifier = {
+            name,
+            type,
+            parseInt(bonus, fileName)
+        };
     attributeModifiers[name] = attributeModifier;
   }
   return attributeModifiers;
 }
 
-std::unordered_map<std::string, ElementalModifier> loadElementalModifiers() {
-  std::ifstream file("elements.csv");
+std::unordered_map<std::string, ElementalModifier> loadElementalModifiers(const char* fileName = "elements.csv") {
+  std::ifstream file(fileName);
   std::string line;
   std::unordered_map<std::string, ElementalModifier> elementalModifiers;
-  std::getline(file, line);  // skip header line
+  std::getline(file, line);
   while (std::getline(file, line)) {
     std::stringstream strStream(line);
     std::string type;
@@ -184,24 +196,22 @@ std::unordered_map<std::string, ElementalModifier> loadElementalModifiers() {
     std::getline(strStream, name, ',');
     std::getline(strStream, resistance, ',');
     std::getline(strStream, damage);
-    try {
-      std::stoi(resistance);
-      std::stoi(damage);
-    } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in elements.csv" << e.what() << RESET << "\n";
-      exit(1);
-    }
-    ElementalModifier elementalModifier = { type, name, std::stoi(resistance), std::stoi(damage) };
+    ElementalModifier elementalModifier = {
+            type,
+            name,
+            parseInt(resistance, fileName),
+            parseInt(damage, fileName)
+        };
     elementalModifiers[name] = elementalModifier;
   }
   return elementalModifiers;
 }
 
-std::unordered_map<std::string, MaterialModifier> loadMaterialModifiers() {
-  std::ifstream file("materials.csv");
+std::unordered_map<std::string, MaterialModifier> loadMaterialModifiers(const char* fileName = "materials.csv") {
+  std::ifstream file(fileName);
   std::unordered_map<std::string, MaterialModifier> materialModifiers;
   std::string line;
-  std::getline(file, line);  // skip header line
+  std::getline(file, line);
   while (std::getline(file, line)) {
     std::stringstream strStream(line);
     std::string quality;
@@ -216,21 +226,12 @@ std::unordered_map<std::string, MaterialModifier> loadMaterialModifiers() {
     std::getline(strStream, damageBonus, ',');
     std::getline(strStream, armorClassBonus, ',');
     std::getline(strStream, costMultiplier);
-    try {
-      std::stoi(toHitBonus);
-      std::stoi(damageBonus);
-      std::stoi(armorClassBonus);
-      std::stof(costMultiplier);
-    } catch (const std::invalid_argument& e) {
-      std::cout << RED << "Error: invalid argument in materials.csv" << e.what() << RESET << "\n";
-      exit(1);
-    }
     MaterialModifier materialModifier = { quality,
                                           material,
-                                          std::stoi(toHitBonus),
-                                          std::stoi(damageBonus),
-                                          std::stoi(armorClassBonus),
-                                          std::stof(costMultiplier) };
+                                          parseInt(toHitBonus, fileName),
+                                          parseInt(damageBonus, fileName),
+                                          parseInt(armorClassBonus, fileName),
+                                          parseFloat(costMultiplier, fileName) };
     materialModifiers[material] = materialModifier;
   }
   return materialModifiers;
@@ -392,14 +393,14 @@ void printAttributeArmor(const std::unordered_map<std::string, AttributeModifier
 
 void printMaterialAccessory(const std::unordered_map<std::string, MaterialModifier>& materialModifiers,
                             const std::string& material,
-                            const std::unordered_map<std::string, Accessories>& accessories,
+                            const std::unordered_map<std::string, Accessory>& accessories,
                             const std::string& accessoryName) {
   auto accessoryIt = accessories.find(accessoryName);
   if (accessoryIt == accessories.end()) {
     std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << "\n";
     return;
   }
-  const Accessories& accessory = accessoryIt->second;
+  const Accessory& accessory = accessoryIt->second;
 
   auto materialIt = materialModifiers.find(material);
   if (materialIt == materialModifiers.end()) {
@@ -418,14 +419,14 @@ void printMaterialAccessory(const std::unordered_map<std::string, MaterialModifi
 
 void printElementalAccessory(const std::unordered_map<std::string, ElementalModifier>& elementalModifiers,
                              const std::string& elemental,
-                             const std::unordered_map<std::string, Accessories>& accessories,
+                             const std::unordered_map<std::string, Accessory>& accessories,
                              const std::string& accessoryName) {
   auto accessoryIt = accessories.find(accessoryName);
   if (accessoryIt == accessories.end()) {
     std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << "\n";
     return;
   }
-  const Accessories& accessory = accessoryIt->second;
+  const Accessory& accessory = accessoryIt->second;
 
   auto elementalIt = elementalModifiers.find(elemental);
   if (elementalIt == elementalModifiers.end()) {
@@ -441,14 +442,14 @@ void printElementalAccessory(const std::unordered_map<std::string, ElementalModi
 
 void printAttributeAccessory(const std::unordered_map<std::string, AttributeModifier>& attributeModifiers,
                              const std::string& attribute,
-                             const std::unordered_map<std::string, Accessories>& accessories,
+                             const std::unordered_map<std::string, Accessory>& accessories,
                              const std::string& accessoryName) {
   auto accessoryIt = accessories.find(accessoryName);
   if (accessoryIt == accessories.end()) {
     std::cout << RED << "Error: accessory " << accessoryName << " not found" << RESET << "\n";
     return;
   }
-  const Accessories& accessory = accessoryIt->second;
+  const Accessory& accessory = accessoryIt->second;
 
   auto attributeIt = attributeModifiers.find(attribute);
   if (attributeIt == attributeModifiers.end()) {
@@ -513,7 +514,7 @@ void printAccessory(const std::unordered_map<std::string, MaterialModifier>& mat
                     const std::unordered_map<std::string, ElementalModifier>& elementalModifiers,
                     const std::unordered_map<std::string, AttributeModifier>& attributeModifiers,
                     const std::string& modifier,
-                    const std::unordered_map<std::string, Accessories>& accessories,
+                    const std::unordered_map<std::string, Accessory>& accessories,
                     const std::string& itemName) {
   if (materialModifiers.find(modifier) != materialModifiers.end()) {
     printMaterialAccessory(materialModifiers, modifier, accessories, itemName);
@@ -532,7 +533,7 @@ void processItem(const std::unordered_map<std::string, MaterialModifier>& materi
                  const std::string& modifier,
                  const std::unordered_map<std::string, Weapon>& weapons,
                  const std::unordered_map<std::string, Armor>& armors,
-                 const std::unordered_map<std::string, Accessories>& accessories,
+                 const std::unordered_map<std::string, Accessory>& accessories,
                  const std::string& itemName) {
   if (weapons.find(itemName) != weapons.end()) {
     printWeapon(materialModifiers, elementalModifiers, attributeModifiers, modifier, weapons, itemName);
@@ -550,7 +551,7 @@ bool getInput(const std::unordered_map<std::string, MaterialModifier>& materialM
               const std::unordered_map<std::string, AttributeModifier>& attributeModifiers,
               const std::unordered_map<std::string, Weapon>& weapons,
               const std::unordered_map<std::string, Armor>& armors,
-              const std::unordered_map<std::string, Accessories>& accessories) {
+              const std::unordered_map<std::string, Accessory>& accessories) {
   std::string input;
   std::cout << YELLOW << "Enter an item with a modifier, or q/Q/exit/quit to quit: " << RESET;
   std::getline(std::cin, input);
@@ -578,7 +579,7 @@ bool getInput(const std::unordered_map<std::string, MaterialModifier>& materialM
 int main() {
   const std::unordered_map<std::string, Weapon> weapons = loadWeapons();
   const std::unordered_map<std::string, Armor> armors = loadArmors();
-  const std::unordered_map<std::string, Accessories> accessories = loadAccessories();
+  const std::unordered_map<std::string, Accessory> accessories = loadAccessories();
   const std::unordered_map<std::string, MaterialModifier> materialModifiers = loadMaterialModifiers();
   const std::unordered_map<std::string, ElementalModifier> elementalModifiers = loadElementalModifiers();
   const std::unordered_map<std::string, AttributeModifier> attributeModifiers = loadAttributeModifiers();
