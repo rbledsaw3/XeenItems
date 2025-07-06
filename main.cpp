@@ -1,9 +1,14 @@
+#include <array>
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 
 const char* const RED = "\033[31m";      // Red
@@ -14,39 +19,69 @@ const char* const MAGENTA = "\033[35m";  // Magenta
 const char* const CYAN = "\033[36m";     // Cyan
 const char* const RESET = "\033[0m";     // Reset to default color
 
+const uint8_t MAX_CHARACTERS = 6;
+
+template <typename T>
+T parseUnsignedInt(const std::string& str, const char* fileName) {
+    static_assert(std::is_unsigned_v<T> &&
+                    std::is_integral_v<T>,
+                    "T must be an unsigned integral type");
+    try {
+        size_t idx = 0;
+        unsigned long long value = std::stoull(str, &idx, 0);
+        if (idx != str.size()) {
+            std::cerr << RED << "Error: Extra characters after number in " <<
+                fileName << ": " << str << RESET << "'\n";
+            exit(1);
+        }
+        if (value > std::numeric_limits<T>::max()) {
+            std::cerr << RED << "Error: Value out of range for type in " <<
+                fileName << ": " << str << RESET << "'\n";
+            exit(1);
+        }
+        return static_cast<T>(value);
+    } catch (const std::invalid_argument& e) {
+        std::cerr << RED << "Error: Invalid argument in " << fileName << ": " << e.what() << RESET << "\n";
+        exit(1);
+    } catch (const std::out_of_range& e) {
+        std::cerr << RED << "Error: Out of range in " << fileName << ": " << e.what() << RESET << "\n";
+        exit(1);
+    }
+}
+
 struct Weapon {
     std::string name;
-    int minDamage;
-    int maxDamage;
-    int baseCost;
+    uint8_t minDamage;
+    uint8_t maxDamage;
+    uint16_t baseCost;
     std::string restrictions;
 };
 
 struct Armor {
     std::string name;
-    int baseCost;
-    int armorClass;
+    uint16_t baseCost;
+    uint8_t armorClass;
     std::string equipable;
     std::string restrictions;
 };
 
 struct Accessory {
     std::string name;
-    int baseCost;
+    uint16_t baseCost;
     std::string qtyEquipable;
 };
 
 struct AttributeModifier {
     std::string name;
     std::string type;
-    int bonus;
+    uint8_t bonus;
 };
 
 struct ElementalModifier {
     std::string type;
     std::string name;
-    int resistance;
-    int damage;
+    uint8_t resistance;
+    uint8_t damage;
 };
 
 struct MaterialModifier {
@@ -56,6 +91,79 @@ struct MaterialModifier {
     int damageBonus;
     int armorClassBonus;
     float costMultiplier;
+};
+
+struct Stats {
+    uint8_t might;
+    uint8_t intellect;
+    uint8_t personality;
+    uint8_t endurance;
+    uint8_t speed;
+    uint8_t accuracy;
+    uint8_t luck;
+};
+
+struct Resistances {
+    uint8_t fire;
+    uint8_t electric;
+    uint8_t cold;
+    uint8_t poison;
+    uint8_t energy;
+    uint8_t magic;
+};
+
+enum class CharacterClass : uint8_t {
+    ARCHER,
+    BARBARIAN,
+    CLERIC,
+    DRUID,
+    KNIGHT,
+    NINJA,
+    PALADIN,
+    RANGER,
+    ROBBER,
+    SORCERER,
+};
+
+struct Character {
+    std::string name;
+    CharacterClass characterClass;
+    uint8_t level;
+    uint16_t hp;
+    uint16_t sp;
+    uint16_t ac;
+    int meleeAttack;
+    int rangedAttack;
+    uint8_t meleeDamage;
+    uint8_t rangedDamage;
+    Stats stats;
+    Resistances resistances;
+    std::unordered_map<std::string, Weapon> weapons;
+    std::unordered_map<std::string, Armor> armors;
+    std::unordered_map<std::string, Accessory> accessories;
+    Weapon meleeWeapon;
+    Weapon rangedWeapon;
+    Armor headSlot;
+    Armor chestSlot;
+    Armor armsSlot;
+    Armor legsSlot;
+    Armor feetSlot;
+    Armor handsSlot;
+    Armor shieldSlot;
+    Accessory necklaceSlot;
+    Accessory ringSlot1;
+    Accessory ringSlot2;
+    Accessory trinketSlot1;
+    Accessory trinketSlot2;
+    Accessory trinketSlot3;
+    Accessory trinketSlot4;
+};
+
+struct Party {
+    std::array<Character, MAX_CHARACTERS> characters;
+    std::unordered_map<std::string, Weapon> weapons;
+    std::unordered_map<std::string, Armor> armors;
+    std::unordered_map<std::string, Accessory> accessories;
 };
 
 int parseInt(const std::string& str, const char* fileName) {
@@ -96,9 +204,9 @@ std::unordered_map<std::string, Weapon> loadWeapons(const char* fileName = "weap
     std::getline(strStream, restrictions);
     Weapon weapon = {
             name,
-            parseInt(minDamage, fileName),
-            parseInt(maxDamage, fileName),
-            parseInt(baseCost, fileName),
+            parseUnsignedInt<uint8_t>(minDamage, fileName),
+            parseUnsignedInt<uint8_t>(maxDamage, fileName),
+            parseUnsignedInt<uint16_t>(baseCost, fileName),
             restrictions
         };
     weapons[name] = weapon;
@@ -125,8 +233,8 @@ std::unordered_map<std::string, Armor> loadArmors(const char* fileName = "armor.
     std::getline(strStream, restrictions);
     Armor armor = {
             name,
-            parseInt(baseCost, fileName),
-            parseInt(armorClass, fileName),
+            parseUnsignedInt<uint16_t>(baseCost, fileName),
+            parseUnsignedInt<uint8_t>(armorClass, fileName),
             equipable,
             restrictions
         };
@@ -150,7 +258,7 @@ std::unordered_map<std::string, Accessory> loadAccessories(const char* fileName 
     std::getline(strStream, qtyEquipable);
     Accessory accessory = {
             name,
-            parseInt(baseCost, fileName),
+            parseUnsignedInt<uint16_t>(baseCost, fileName),
             qtyEquipable
         };
     accessories[name] = accessory;
@@ -174,7 +282,7 @@ std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers(const 
     AttributeModifier attributeModifier = {
             name,
             type,
-            parseInt(bonus, fileName)
+            parseUnsignedInt<uint8_t>(bonus, fileName)
         };
     attributeModifiers[name] = attributeModifier;
   }
@@ -199,8 +307,8 @@ std::unordered_map<std::string, ElementalModifier> loadElementalModifiers(const 
     ElementalModifier elementalModifier = {
             type,
             name,
-            parseInt(resistance, fileName),
-            parseInt(damage, fileName)
+            parseUnsignedInt<uint8_t>(resistance, fileName),
+            parseUnsignedInt<uint8_t>(damage, fileName)
         };
     elementalModifiers[name] = elementalModifier;
   }
