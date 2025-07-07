@@ -4,6 +4,13 @@
 
 Ever play Might & Magic's Clouds/Darkside/World/Swords of Xeen? Isn't it a pain to have to lookup whether the item you have is better than the item you just found on the lich you just killed? This is a program I wrote to help with that. Just type the name of the item in and it'll assembly, based on the nomenclature, what boosts and effects are found on that item.
 
+## Project Structure
+
+- **src/** – All source and header files
+- **data/** – All item/modifier CSV data files
+- **build/** – Build output directory (created by the build script)
+- **build.sh** – Bash script to compile the project
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -23,11 +30,13 @@ cd XeenItems
 
 ### Building the Project
 
-To build the project, use the following commands:
+Run the provided build script:
 
 ```bash
-g++ -Wall -pedantic main.cpp -o main
+./build.sh
 ```
+
+This will compile all source files from `src/` and output the binary to `build/main`.
 
 
 ### Running the Application
@@ -35,8 +44,21 @@ g++ -Wall -pedantic main.cpp -o main
 After successful compilation, you can run the program with:
 
 ```bash
-./main
+build/main
 ```
+
+## Data Files
+
+All item data, modifiers, and definitions are loaded from CSV files in the `data/` directory:
+
+- `weapons.csv`
+- `armor.csv`
+- `accessories.csv`
+- `attributes.csv`
+- `elements.csv`
+- `materials.csv`
+
+The program expects these files to be present in the `data/` directory.
 
 ## How to Use
 
@@ -51,16 +73,19 @@ Damage: 15-21
 Cost: 3000
 To Hit Bonus: +6
 Restrictions: No Cleric Druid Ninja Sorcerer
+
 Enter an item with a modifier, or q/Q/exit/quit to quit: Mind Ring
 Name: Mind Ring
 Bonus: +3 Intellect
 Cost: 100
 Qty Equipable: 2
+
 Enter an item with a modifier, or q/Q/exit/quit to quit: Quartz Helm
 Name: Quartz Helm
 Armor Class: 7
 Cost: 3000
 Restrictions: None
+
 Enter an item with a modifier, or q/Q/exit/quit to quit: Sonic Scimitar
 Name: Sonic Scimitar
 Damage: 2-10
@@ -68,6 +93,7 @@ Cost: 80
 Elemental Damage: 5 Energy Damage
 Total Damage: 7-15
 Restrictions: No Cleric Druid Ninja Sorcerer
+
 Enter an item with a modifier, or q/Q/exit/quit to quit: q
 Exiting...
 ```

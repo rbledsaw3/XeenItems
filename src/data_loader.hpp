@@ -45,16 +45,16 @@ int parseInt(const std::string& str, const char* fileName);
 
 float parseFloat(const std::string& str, const char* fileName);
 
-std::unordered_map<std::string, Weapon> loadWeapons(const char* fileName = "weapons.csv");
+std::unordered_map<std::string, Weapon> loadWeapons(const char* fileName = "data/weapons.csv");
 
-std::unordered_map<std::string, Armor> loadArmors(const char* fileName = "armor.csv");
+std::unordered_map<std::string, Armor> loadArmors(const char* fileName = "data/armor.csv");
 
-std::unordered_map<std::string, Accessory> loadAccessories(const char* fileName = "accessories.csv");
+std::unordered_map<std::string, Accessory> loadAccessories(const char* fileName = "data/accessories.csv");
 
-std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers(const char* fileName = "attributes.csv");
+std::unordered_map<std::string, AttributeModifier> loadAttributeModifiers(const char* fileName = "data/attributes.csv");
 
-std::unordered_map<std::string, ElementalModifier> loadElementalModifiers(const char* fileName = "elements.csv");
+std::unordered_map<std::string, ElementalModifier> loadElementalModifiers(const char* fileName = "data/elements.csv");
 
-std::unordered_map<std::string, MaterialModifier> loadMaterialModifiers(const char* fileName = "materials.csv");
+std::unordered_map<std::string, MaterialModifier> loadMaterialModifiers(const char* fileName = "data/materials.csv");
 
 #endif // HEADER_DATA_LOADER_HPP

@@ -6,7 +6,7 @@ LDFLAGS=""
 OUTDIR="build"
 OUTBIN="$OUTDIR/main"
 
-SRCS=(main.cpp console.cpp data_loader.cpp party.cpp)
+SRCS=(src/main.cpp src/console.cpp src/data_loader.cpp src/party.cpp)
 
 mkdir -p "$OUTDIR"
 
